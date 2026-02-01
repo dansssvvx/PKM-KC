@@ -1,7 +1,7 @@
 
 # SignTalk: Penerjemah Bahasa Isyarat Indonesia (BISINDO)
 
-![SignTalk Demo](https://placehold.co/600x400?text=Tangkapan+Layar+Aplikasi)
+![SignTalk Demo](https://placehold.co/600x400?text=Sabar+yaa,+masih+proses)
 
 ## 👋 Tentang Proyek Ini
 
