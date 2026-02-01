@@ -1,0 +1,18 @@
+Instalasi dilakukan dengan terlebih dahulu memasang seluruh dependensi melalui Command Prompt (CMD) menggunakan perintah: 
+
+pip install -r requirements.txt
+ 
+Setelah itu, pengisian dataset dilakukan dengan menjalankan perintah: 
+
+python src/data_collection.py [label]
+
+di mana label bersifat bebas, misalnya huruf A atau suku kata tertentu yang akan digunakan sebagai kelas penerjemah. 
+
+Jika dataset sudah terkumpul, langkah berikutnya adalah melakukan proses klasifikasi atau pelatihan model dengan menjalankan perintah:
+
+python src/model_training.py 
+
+Setelah proses training selesai, aplikasi dapat dijalankan menggunakan perintah 
+python src/app.py
+
+dengan catatan aplikasi hanya akan bekerja sesuai dengan dataset dan model yang telah dilatih sebelumnya.
