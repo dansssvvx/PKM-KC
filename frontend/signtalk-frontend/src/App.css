@@ -2,96 +2,123 @@
   width: 100%;
   margin: 0;
   padding: 0;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
+/* =======================
+   Layout
+======================= */
 .app-container {
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(135deg, #ecfdf5, #ffffff);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
 }
 
+/* =======================
+   Header
+======================= */
 .app-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .app-header h1 {
   font-size: 3rem;
-  margin: 0 0 10px;
-  background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #10b981, #22c55e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .app-header p {
   color: #6b7280;
   font-size: 1.1rem;
-  margin: 0;
 }
 
+/* =======================
+   Main Grid
+======================= */
 .app-main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  max-width: 1400px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 1300px;
   margin: 0 auto;
-  flex: 1;
   width: 100%;
+  flex: 1;
 }
 
-.translator-section,
-.result-section,
-.text-to-sign-section {
+/* =======================
+   Card Style
+======================= */
+.card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.translator-section h2,
-.result-section h2 {
-  margin: 0 0 15px 0;
-  font-size: 1.3rem;
-  color: #1f2937;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
 }
 
+.card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+  color: #064e3b;
+}
+
+/* =======================
+   Sections
+======================= */
 .text-to-sign-section {
   grid-column: 1 / -1;
   max-width: 800px;
   margin: 0 auto;
-  width: 100%;
 }
 
+/* =======================
+   Footer
+======================= */
 .app-footer {
+  margin-top: 40px;
+  padding-top: 20px;
   text-align: center;
   color: #6b7280;
-  margin-top: 40px;
+  font-size: 0.95rem;
   border-top: 1px solid #e5e7eb;
-  padding-top: 20px;
 }
 
+/* =======================
+   Responsive
+======================= */
 @media (max-width: 1024px) {
   .app-main {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 
   .app-header h1 {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
   }
 }
 
 @media (max-width: 640px) {
   .app-container {
-    padding: 10px;
+    padding: 16px;
+  }
+
+  .card {
+    padding: 18px;
   }
 
   .app-header h1 {
     font-size: 2rem;
-  }
-
-  .app-header p {
-    font-size: 1rem;
   }
 }

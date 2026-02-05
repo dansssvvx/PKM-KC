@@ -22,25 +22,24 @@ function App() {
       <main className="app-main">
         {mode === "sign-to-text" ? (
           <>
-            {/* Sign to Text Mode */}
-            <div className="translator-section">
-              <h2>📹 Detektor Gesture</h2>
+            <section className="card translator-section">
+              <h2>📹 Deteksi Gesture</h2>
               <Translator setResult={setResult} />
-            </div>
+            </section>
 
-            <div className="result-section">
+            <section className="card result-section">
+              <h2>📝 Hasil Terjemahan</h2>
               <ResultBox text={result} />
-            </div>
+            </section>
           </>
         ) : (
-          <>
-            {/* Text to Sign Mode */}
-            <div className="text-to-sign-section">
-              <TextToSign />
-            </div>
-          </>
+          <section className="card text-to-sign-section">
+            <h2>✋ Text to Sign</h2>
+            <TextToSign />
+          </section>
         )}
       </main>
+
 
       <footer className="app-footer">
         <p>💡 Tips: {mode === "sign-to-text" ? "Posisikan tangan Anda di depan kamera untuk hasil optimal" : "Ketik teks untuk melihat gesture yang sesuai"}</p>
