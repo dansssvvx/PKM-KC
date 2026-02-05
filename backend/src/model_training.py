@@ -99,7 +99,7 @@ def main():
     history = model.fit(
         X_train,
         y_train,
-        epochs=50,
+        epochs=30, #awalnya 50
         batch_size=32,
         validation_data=(X_test, y_test),
         callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)]

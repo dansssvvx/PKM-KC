@@ -1,3 +1,4 @@
 # Requirements specifically for converting the Keras model to web format.
 tensorflow
 tensorflowjs
+flask
