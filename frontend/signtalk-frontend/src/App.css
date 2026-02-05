@@ -43,7 +43,8 @@
 }
 
 .translator-section,
-.result-section {
+.result-section,
+.text-to-sign-section {
   display: flex;
   flex-direction: column;
 }
@@ -53,6 +54,13 @@
   margin: 0 0 15px 0;
   font-size: 1.3rem;
   color: #1f2937;
+}
+
+.text-to-sign-section {
+  grid-column: 1 / -1;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .app-footer {
