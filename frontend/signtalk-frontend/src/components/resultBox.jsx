@@ -119,10 +119,10 @@ const ResultBox = ({ text }) => {
 
 // Helper function to determine confidence color
 const getConfidenceColor = (percent) => {
-  if (percent >= 80) return "#22c55e"; // Green
-  if (percent >= 60) return "#eab308"; // Yellow
-  if (percent >= 40) return "#f97316"; // Orange
-  return "#ef4444"; // Red
+  if (percent >= 80) return "var(--st-secondary)";
+  if (percent >= 60) return "var(--st-accent)";
+  if (percent >= 40) return "#ea580c";
+  return "var(--st-error)";
 };
 
 export default ResultBox;

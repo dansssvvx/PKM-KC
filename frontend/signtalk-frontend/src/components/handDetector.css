@@ -1,0 +1,39 @@
+.hand-detector-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: var(--st-radius-lg);
+  overflow: hidden;
+  background: var(--st-text);
+  border: 2px solid var(--st-secondary);
+  box-shadow: var(--st-shadow);
+}
+
+.hand-detector-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--st-radius-lg) - 2px);
+}
+
+.hand-detector-loading,
+.hand-detector-error {
+  padding: var(--st-space-10) var(--st-space-6);
+  text-align: center;
+  border-radius: calc(var(--st-radius-lg) - 2px);
+}
+
+.hand-detector-loading {
+  background: #1F2937;
+  color: var(--st-secondary-light);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.hand-detector-error {
+  background: var(--st-error-bg);
+  color: var(--st-error);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}

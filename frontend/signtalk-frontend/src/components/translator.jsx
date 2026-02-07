@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import HandDetector from "./handDetector";
 import { sendLandmarks, buildTwoHandFeatures } from "../services/api";
+import "./translator.css";
 
 const Translator = ({ setResult }) => {
   const [handsDetected, setHandsDetected] = useState(0);
@@ -40,13 +41,15 @@ const Translator = ({ setResult }) => {
   };
 
   return (
-    <div>
+    <div className="translator-wrap">
       <HandDetector onLandmarksDetected={handleLandmarksDetected} onHandsFound={setHandsDetected} />
-      <div style={{ marginTop: "10px", fontSize: "14px", color: "#666" }}>
-        {handsDetected === 0 ? "🖐️ No hands detected" : `🖐️ Hands detected: ${handsDetected}`}
-        {loading && " | 📤 Sending..."}
+      <div className="translator-status">
+        <span className={handsDetected > 0 ? "hands" : ""}>
+          {handsDetected === 0 ? "🖐️ Tidak ada tangan terdeteksi" : `🖐️ Tangan terdeteksi: ${handsDetected}`}
+        </span>
+        {loading && <span className="loading">📤 Mengirim...</span>}
       </div>
-      {error && <div style={{ color: "red", marginTop: "10px" }}>⚠️ {error}</div>}
+      {error && <div className="translator-error">⚠️ {error}</div>}
     </div>
   );
 };

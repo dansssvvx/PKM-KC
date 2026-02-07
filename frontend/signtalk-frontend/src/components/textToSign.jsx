@@ -1,16 +1,61 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { GESTURE_LABELS } from "../constants/gestures";
 import "./textToSign.css";
 
+/* =======================
+   Helper Functions
+======================= */
+
+// Normalisasi teks → nama file
+const normalizeText = (text) =>
+  text.toUpperCase().trim().replace(/\s+/g, "_");
+
+// Ambil label gesture
+const getGestureLabel = (key) => GESTURE_LABELS[key] || key;
+
+// Generate gesture list
+const mapTextToGestures = (text, mode) => {
+  if (!text.trim()) return [];
+
+  if (mode === "word") {
+    const key = normalizeText(text);
+    return [{
+          text: key,
+          label: getGestureLabel(key),
+          videoUrl: `/gestures/videos/${key}.mp4`,
+          imageUrl: `/gestures/images/${key}.jpg`,
+        },
+    ];
+  }
+
+  // mode === "char"
+  return normalizeText(text)
+    .replace(/_/g, "")
+    .split("")
+    .map((char) => ({
+      text: char,
+      label: getGestureLabel(char),
+      imageUrl: `/gestures/images/${char}.jpg`,
+    }));
+};
+
+/* =======================
+   Component
+======================= */
+
 const TextToSign = () => {
-  const [inputText, inputSetText] = useState("");
-  const [selectedGestures, setSelectedGestures] = useState([]);
+  const [inputText, setInputText] = useState("");
+  const [gestures, setGestures] = useState([]);
+  const [mode, setMode] = useState("word");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [gestureLists, setGestureLists] = useState([]);
-  const [mode, setMode] = useState("word"); // "word" or "char"
+  const videoError = useState(false);
+  // const videoRef = useRef(null);
+  const videoRef = useRef([]);
 
-  // Convert text to individual signs (per word or per character)
+
+
+
   const handleConvertText = async () => {
     if (!inputText.trim()) {
       setError("Masukkan teks terlebih dahulu");
@@ -21,47 +66,40 @@ const TextToSign = () => {
     setError(null);
 
     try {
-      let items;
-
-      if (mode === "word") {
-        // Split text into words (separated by spaces)
-        items = inputText.trim().split(/\s+/); // Handles multiple spaces
-      } else {
-        // Split text into characters
-        items = inputText.toUpperCase().split("").filter((char) => char !== " ");
-      }
-
-      const mappedGestures = items.map((item) => ({
-        text: item.toUpperCase(),
-        // Placeholder untuk gesture data - nanti bisa connect ke server
-        videoUrl: `/gestures/${item.toUpperCase()}.mp4`,
-        label: getGestureLabel(item.toUpperCase()),
-      }));
-
-      setSelectedGestures(mappedGestures);
-      setGestureLists(mappedGestures);
+      const mappedGestures = mapTextToGestures(inputText, mode);
+      console.log("TEXT:", inputText);
+console.log("RESULT:", mappedGestures);
+      setGestures(mappedGestures);
     } catch (err) {
-      setError(err.message);
+      setError("Terjadi kesalahan saat memproses teks");
     } finally {
       setLoading(false);
     }
   };
 
-  // Get label untuk gesture dari constants
-  const getGestureLabel = (char) => {
-    return GESTURE_LABELS[char] || char;
-  };
+  // const handlePlaySequence = async () => {
+  //   if (!gestures.length) return;
 
-  const handlePlaySequence = async () => {
-    if (selectedGestures.length === 0) return;
+  //   for (const gesture of gestures) {
+  //     console.log(`Playing gesture: ${gesture.text}`);
+  //     await new Promise((resolve) => setTimeout(resolve, 800));
+  //   }
+  // };
 
-    // Simulate video playback sequence
-    for (let gesture of selectedGestures) {
-      // Play video atau animasi gesture
-      console.log(`Playing gesture: ${gesture.text}`);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1s per gesture
-    }
-  };
+const handlePlaySequence = async () => {
+  for (const video of videoRef.current) {
+    if (!video) continue;
+
+    video.currentTime = 0;
+    await video.play();
+
+    await new Promise((resolve) =>
+      video.onended = resolve
+    );
+  }
+};
+
+
 
   return (
     <div className="text-to-sign-container">
@@ -73,7 +111,7 @@ const TextToSign = () => {
             className={`mode-btn ${mode === "word" ? "active" : ""}`}
             onClick={() => {
               setMode("word");
-              setSelectedGestures([]);
+              setGestures([]);
               setError(null);
             }}
           >
@@ -83,7 +121,7 @@ const TextToSign = () => {
             className={`mode-btn ${mode === "char" ? "active" : ""}`}
             onClick={() => {
               setMode("char");
-              setSelectedGestures([]);
+              setGestures([]);
               setError(null);
             }}
           >
@@ -92,21 +130,21 @@ const TextToSign = () => {
         </div>
       </div>
 
-      {/* Input Section */}
+      {/* Input */}
       <div className="input-section">
         <label htmlFor="text-input">📝 Masukkan Teks:</label>
         <textarea
           id="text-input"
-          value={inputText}
-          onChange={(e) => inputSetText(e.target.value)}
-          placeholder="Ketik teks yang ingin diterjemahkan ke gesture..."
-          rows="4"
           className="text-input"
+          rows="4"
+          placeholder="Ketik teks yang ingin diterjemahkan..."
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
         />
         <button
+          className="btn-convert"
           onClick={handleConvertText}
           disabled={loading || !inputText.trim()}
-          className="btn-convert"
         >
           {loading ? "⏳ Memproses..." : "✨ Konversi ke Gesture"}
         </button>
@@ -114,33 +152,54 @@ const TextToSign = () => {
 
       {error && <div className="error-message">{error}</div>}
 
-      {/* Gesture Preview Section */}
-      {selectedGestures.length > 0 && (
+      {/* Gesture Preview */}
+      {gestures.length > 0 && (
         <div className="gesture-preview-section">
           <h3>
-            🎬 Pratinjau Gesture ({selectedGestures.length}{" "}
+            🎬 Pratinjau Gesture ({gestures.length}{" "}
             {mode === "word" ? "kata" : "huruf"})
           </h3>
 
-          {/* Gesture Grid */}
           <div className="gesture-grid">
-            {selectedGestures.map((gesture, idx) => (
-              <div key={idx} className="gesture-card">
+            {gestures.map((gesture, index) => (
+              <div key={gesture.videoUrl} className={`gesture-card ${
+    gesture.videoUrl && !videoError ? "video-card" : ""
+  }`}>
                 <div className="gesture-char">{gesture.text}</div>
-                <div className="gesture-label">{gesture.label}</div>
-                <div className="gesture-placeholder">
-                  📹 Video Gesture
-                </div>
+                {/* <div className="gesture-label">{gesture.label}</div> */}
+                <div className="gesture-image-wrapper">
+  {gesture.videoUrl ? (
+    <video
+      key={gesture.videoUrl}
+      ref={(el) => (videoRef.current[index] = el)}
+      src={gesture.videoUrl}
+      className="gesture-video video-large"
+      controls
+      muted
+      playsInline
+      preload="metadata"
+    >
+      <source src={gesture.videoUrl} type="video/mp4" />
+    </video>
+  ) : (
+    <img
+      src={gesture.imageUrl}
+      alt={gesture.label}
+      className="gesture-image"
+    />
+  )}
+</div>
+
+
+
               </div>
             ))}
           </div>
 
-          {/* Play Button */}
-          <button onClick={handlePlaySequence} className="btn-play">
+          <button className="btn-play" onClick={handlePlaySequence}>
             ▶️ Putar Animasi
           </button>
 
-          {/* Transcription Display */}
           <div className="transcription-box">
             <h4>📋 Teks Asli:</h4>
             <p className="transcription-text">{inputText}</p>
@@ -148,15 +207,15 @@ const TextToSign = () => {
         </div>
       )}
 
-      {/* Help Text */}
-      {selectedGestures.length === 0 && !error && (
+      {/* Help */}
+      {gestures.length === 0 && !error && (
         <div className="help-section">
           <h3>ℹ️ Cara Menggunakan:</h3>
           <ol>
-            <li>Ketik teks/kalimat yang ingin diterjemahkan</li>
-            <li>Klik "✨ Konversi ke Gesture"</li>
-            <li>Lihat pratinjau gesture untuk setiap kata</li>
-            <li>Klik "▶️ Putar Animasi" untuk melihat sequence</li>
+            <li>Ketik teks atau kalimat</li>
+            <li>Pilih mode kata atau huruf</li>
+            <li>Klik konversi</li>
+            <li>Lihat hasil gesture</li>
           </ol>
         </div>
       )}

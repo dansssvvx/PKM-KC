@@ -1,0 +1,127 @@
+.admin-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: var(--st-space-6);
+}
+
+.login-card {
+  background: var(--st-bg-card);
+  border-radius: var(--st-radius-lg);
+  padding: var(--st-space-8);
+  border: 1px solid var(--st-border);
+  box-shadow: var(--st-shadow-md);
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--st-space-6);
+}
+
+.login-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--st-text);
+  margin-bottom: var(--st-space-2);
+}
+
+.login-header p {
+  font-size: 0.9375rem;
+  color: var(--st-text-muted);
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--st-space-4);
+}
+
+.login-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--st-space-2);
+}
+
+.login-form label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--st-text);
+}
+
+.login-form input {
+  width: 100%;
+  padding: var(--st-space-3) var(--st-space-4);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: var(--st-primary);
+  box-shadow: 0 0 0 3px var(--st-primary-bg);
+}
+
+.login-form input:disabled {
+  background: var(--st-bg);
+  cursor: not-allowed;
+}
+
+.login-error {
+  padding: var(--st-space-3) var(--st-space-4);
+  background: var(--st-error-bg);
+  color: var(--st-error);
+  border-radius: var(--st-radius-md);
+  font-size: 0.875rem;
+  border: 1px solid var(--st-error);
+}
+
+.btn-login {
+  padding: var(--st-space-3) var(--st-space-5);
+  background: var(--st-primary);
+  color: white;
+  border-radius: var(--st-radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-top: var(--st-space-2);
+}
+
+.btn-login:hover:not(:disabled) {
+  background: var(--st-primary-hover);
+  box-shadow: var(--st-shadow-sm);
+}
+
+.btn-login:disabled {
+  background: var(--st-border);
+  color: var(--st-text-muted);
+  cursor: not-allowed;
+}
+
+.login-footer {
+  margin-top: var(--st-space-6);
+  padding-top: var(--st-space-4);
+  border-top: 1px solid var(--st-border);
+  text-align: center;
+}
+
+.login-footer small {
+  color: var(--st-text-subtle);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 640px) {
+  .admin-login {
+    padding: var(--st-space-4);
+  }
+
+  .login-card {
+    padding: var(--st-space-6);
+  }
+}
